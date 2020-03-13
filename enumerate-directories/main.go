@@ -1,6 +1,6 @@
 package main
 
-import(
+import (
 	"encoding/csv"
 	log "github.com/sirupsen/logrus"
 	"io/ioutil"
@@ -11,9 +11,7 @@ import(
 /*
 Enumerates two levels of directories, starting at the root directory.
 Stores results in "dirs.csv"
- */
-
-
+*/
 
 func main() {
 	log.Info("Start")
@@ -23,6 +21,7 @@ func main() {
 	}
 
 	f, err := os.Create("dirs.csv")
+	defer f.Close()
 	writer := csv.NewWriter(f)
 
 	rootDir := os.Args[1]
@@ -32,7 +31,7 @@ func main() {
 	}
 
 	for i, dir := range dirs {
-		if i % 1000 == 0 {
+		if i%1000 == 0 {
 			log.Infof("Processed %d directories", i)
 		}
 
@@ -46,8 +45,8 @@ func main() {
 			if err != nil {
 				log.Error(err)
 			}
+			writer.Flush()
 		}
-
 
 	}
 
